@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import api from '../../services/api';
 import { Container } from './styles';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, FormControl } from 'react-bootstrap';
 
 interface IGallery {
   name: string;
@@ -25,23 +25,27 @@ const FormUp: React.FC = () => {
 
   async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
-    await api.post('/upload', model)
+    var formData = new FormData();
+    // var imagefile = document.querySelector('#file');
+    // formData.append("image", imagefile.files[0]);
+    await api.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'key': 'file_upload[file]',
+        'type': 'file',
+      }
+    })
   }
 
   return (
     <Container>
       <Form onSubmit={onSubmit}>
-        <Form.Group >
-          <Form.Label>Nome</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            value={model.name}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)} />
-        </Form.Group>
         <Form.Group>
           <Form.File id="exampleFormControlFile1" label="Example file input" />
         </Form.Group>
+        <Button variant="success" type="submit">
+          Enviar
+         </Button>
       </Form>
     </Container>
   )
