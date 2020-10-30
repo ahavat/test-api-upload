@@ -26,9 +26,7 @@ const FormUp: React.FC = () => {
   async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
     var formData = new FormData();
-    // var imagefile = document.querySelector('#file');
-    // formData.append("image", imagefile.files[0]);
-    await api.post('/upload', formData, {
+    await api.post('/photos', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'key': 'file_upload[file]',
